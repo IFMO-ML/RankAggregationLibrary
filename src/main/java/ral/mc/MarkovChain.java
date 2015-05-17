@@ -1,14 +1,15 @@
 package ral.mc;
 
+import ral.ListOfRanks;
 import ral.Pair;
 import ral.Ranker;
 
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-public class MarkovChain implements Ranker<Integer> {
+public class MarkovChain<T> implements Ranker<T> {
     private final Type type;
 
     private MarkovChain(Type type) {
@@ -63,20 +64,20 @@ public class MarkovChain implements Ranker<Integer> {
         return x;
     }
 
-    public static MarkovChain MC1() {
-        return new MarkovChain(Type.MC1);
+    public static <T> MarkovChain<T> MC1() {
+        return new MarkovChain<>(Type.MC1);
     }
 
-    public static MarkovChain MC2() {
-        return new MarkovChain(Type.MC2);
+    public static <T> MarkovChain<T> MC2() {
+        return new MarkovChain<>(Type.MC2);
     }
 
-    public static MarkovChain MC3() {
-        return new MarkovChain(Type.MC3);
+    public static <T> MarkovChain<T> MC3() {
+        return new MarkovChain<>(Type.MC3);
     }
 
     @Override
-    public List<Integer> rank(Pair<Double, List<Integer>>[] weighedLists) {
+    public List<T> rank(Pair<Double, List<T>>[] weighedLists) {
         return null;
     }
 
@@ -89,30 +90,93 @@ public class MarkovChain implements Ranker<Integer> {
     }
 
     @Override
-    public List<Integer> rank(List<Integer>[] lists) {
-        final TreeSet<Integer> set = new TreeSet<>();
-        Arrays.stream(lists).forEach(list -> list.stream().forEach(set::add));
+    public List<T> rank(List<T>[] lists) {
+//        final TreeSet<Integer> set = new TreeSet<>();
+//        Arrays.stream(lists).forEach(list -> list.stream().forEach(set::add));
+//
+//        int n = lists.length;
+//        int m = set.size();
+//
+//        List<Integer> features = set.stream().collect(Collectors.toList());
+//        Collections.sort(features);
+//
+//        ArrayList<ArrayList<Pair<Integer, Integer>>> input = new ArrayList<>();
+//        for (List<Integer> list : lists) {
+//            final ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
+//            final TreeSet<Integer> set2 = new TreeSet<>();
+//
+//            for (int i = 0; i < list.size(); i++) {
+//                pairs.add(Pair.of(list.get(i), i));
+//                set2.add(list.get(i));
+//            }
+//
+//            set.stream().filter(t -> !set2.contains(t)).forEach(t -> pairs.add(Pair.of(t + 1, list.size())));
+//            Collections.sort(pairs, (o1, o2) -> Integer.compare(o1.first, o2.first));
+//            input.add(pairs);
+//        }
+//
+//        double subtrahend = 1 / (double) m;
+//        double subtrahend2 = 1 / (double) (m * n);
+//
+//        double medium = n / 2.;
+//        double[][] ma1 = new double[m][m];
+//        double[][] ma2 = new double[m][m];
+//        double[][] ma3 = new double[m][m];
+//
+//        for (int u = 0; u < m; u++) {
+//
+//            for (int v = 0; v < m; v++) {
+//                int c = 0;
+//
+//                for (ArrayList<Pair<Integer, Integer>> list : input) {
+//                    if (list.get(u).second > list.get(v).second) {
+//                        c += 1;
+//                    }
+//                }
+//
+//                if (c > 0) { // MC1
+//                    ma1[u][v] = subtrahend;
+//                }
+//
+//                if (c >= medium) { // MC2
+//                    ma2[u][v] = subtrahend;
+//                }
+//
+//                ma3[u][v] = c * subtrahend2; // MC3
+//            }
+//        }
+//
+//        double[][] ma;
+//        switch (type) {
+//            case MC1:
+//                ma = ma1;
+//                break;
+//            case MC2:
+//                ma = ma2;
+//                break;
+//            default:
+//                ma = ma3;
+//        }
+//
+//        for (int i = 0; i < m; i++) {
+//            ma[i][i] = 1 - DoubleStream.of(ma[i]).sum();
+//        }
+//
+//        transfer(ma, 0.05);
+//        double[] weights = lsolve(ma);
+//
+////        for (double[] doubles : ma) {
+////            System.out.println(Arrays.toString(doubles));
+////        }
+////        System.out.println(Arrays.toString(weights));
+//
+//        return IntStream.range(0, m).mapToObj(i -> Pair.of(weights[i], features.get(i))).sorted((o1, o2) -> -Double.compare(o1.first, o2.first)).map(pair -> pair.second).collect(Collectors.toList());
+        return null;
+    }
 
-        int n = lists.length;
-        int m = set.size();
-
-        List<Integer> features = set.stream().collect(Collectors.toList());
-        Collections.sort(features);
-
-        ArrayList<ArrayList<Pair<Integer, Integer>>> input = new ArrayList<>();
-        for (List<Integer> list : lists) {
-            final ArrayList<Pair<Integer, Integer>> pairs = new ArrayList<>();
-            final TreeSet<Integer> set2 = new TreeSet<>();
-
-            for (int i = 0; i < list.size(); i++) {
-                pairs.add(Pair.of(list.get(i), i));
-                set2.add(list.get(i));
-            }
-
-            set.stream().filter(t -> !set2.contains(t)).forEach(t -> pairs.add(Pair.of(t + 1, list.size())));
-            Collections.sort(pairs, (o1, o2) -> Integer.compare(o1.first, o2.first));
-            input.add(pairs);
-        }
+    public List<T> rank2(ListOfRanks<T> ranks) {
+        int n = ranks.countOfRanks();
+        int m = ranks.countOfItems();
 
         double subtrahend = 1 / (double) m;
         double subtrahend2 = 1 / (double) (m * n);
@@ -123,13 +187,12 @@ public class MarkovChain implements Ranker<Integer> {
         double[][] ma3 = new double[m][m];
 
         for (int u = 0; u < m; u++) {
-
             for (int v = 0; v < m; v++) {
                 int c = 0;
 
-                for (ArrayList<Pair<Integer, Integer>> list : input) {
-                    if (list.get(u).second > list.get(v).second) {
-                        c += 1;
+                for (ListOfRanks<T>.Rank rank : ranks) {
+                    if (rank.position(u) > rank.position(v)) {
+                        c += rank.weight;
                     }
                 }
 
@@ -169,7 +232,7 @@ public class MarkovChain implements Ranker<Integer> {
 //        }
 //        System.out.println(Arrays.toString(weights));
 
-        return IntStream.range(0, m).mapToObj(i -> Pair.of(weights[i], features.get(i))).sorted((o1, o2) -> -Double.compare(o1.first, o2.first)).map(pair -> pair.second).collect(Collectors.toList());
+        return IntStream.range(0, m).mapToObj(i -> Pair.of(weights[i], ranks.itemByNumber(i))).sorted((o1, o2) -> -Double.compare(o1.first, o2.first)).map(pair -> pair.second).collect(Collectors.toList());
     }
 
     private static enum Type {
