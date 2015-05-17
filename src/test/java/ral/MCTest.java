@@ -1,9 +1,7 @@
-package ral.mc;
+package ral;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ral.ListOfRanks;
-import ral.RankAggregator;
 
 import java.util.Arrays;
 

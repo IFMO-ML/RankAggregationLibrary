@@ -1,8 +1,4 @@
-package ral.mc;
-
-import ral.ListOfRanks;
-import ral.Pair;
-import ral.RankAggregator;
+package ral;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,13 +1,11 @@
-package ral.borda;
+package ral;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ral.ListOfRanks;
-import ral.RankAggregator;
 
 import java.util.Arrays;
 
-public class BordasMethodTest {
+public class BordasAggregatorsTest {
     private static final ListOfRanks<Integer> iceCreamFlavors = new ListOfRanks<>(new Integer[][]{
             {1, 2, 3, 5},
             {3, 5, 1, 2},
@@ -33,41 +31,41 @@ public class BordasMethodTest {
 
     @Test
     public void arithmeticAverageRankerTestIceCreamFlavors() {
-        rankVerification(BordasMethod.arithmeticAverageRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
+        rankVerification(BordasAggregators.arithmeticAverageRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
     }
 
     @Test
     public void arithmeticAverageRankerTestLongLists() {
-        rankVerification(BordasMethod.arithmeticAverageRanker(), longLists, longListsBrodaARM);
+        rankVerification(BordasAggregators.arithmeticAverageRanker(), longLists, longListsBrodaARM);
     }
 
     @Test
     public void medianRankerTestIceCreamFlavors() {
-        rankVerification(BordasMethod.medianRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
+        rankVerification(BordasAggregators.medianRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
     }
 
     @Test
     public void medianRankerTestLongLists() {
-        rankVerification(BordasMethod.medianRanker(), longLists, longListsBrodaMED);
+        rankVerification(BordasAggregators.medianRanker(), longLists, longListsBrodaMED);
     }
 
     @Test
     public void geometricMeanRankerTestIceCreamFlavors() {
-        rankVerification(BordasMethod.geometricMeanRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
+        rankVerification(BordasAggregators.geometricMeanRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
     }
 
     @Test
     public void geometricMeanRankerTestLongLists() {
-        rankVerification(BordasMethod.geometricMeanRanker(), longLists, longListsBrodaGEM);
+        rankVerification(BordasAggregators.geometricMeanRanker(), longLists, longListsBrodaGEM);
     }
 
     @Test
     public void L2NormRankerTestIceCreamFlavors() {
-        rankVerification(BordasMethod.L2NormRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
+        rankVerification(BordasAggregators.L2NormRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
     }
 
     @Test
     public void L2NormRankerTestLongLists() {
-        rankVerification(BordasMethod.L2NormRanker(), longLists, longListsBrodaL2N);
+        rankVerification(BordasAggregators.L2NormRanker(), longLists, longListsBrodaL2N);
     }
 }
