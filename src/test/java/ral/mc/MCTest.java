@@ -27,37 +27,37 @@ public class MCTest {
     private static final Integer[] longListsMC2Answer2 = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 57, 56, 58, 59, 60};
     private static final Integer[] longListsMC3Answer = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 56, 57, 58, 59, 60};
 
-    private void rankVerification(MarkovChain<Integer> ranker, ListOfRanks<Integer> ranks, Integer[] expected) {
-        Assert.assertEquals(Arrays.toString(expected), Arrays.toString(Arrays.copyOf(ranker.rank2(ranks).toArray(), expected.length)));
+    private void rankVerification(MarkovChainAggregators<Integer> rankAggregator, ListOfRanks<Integer> ranks, Integer[] expected) {
+        Assert.assertEquals(Arrays.toString(expected), Arrays.toString(Arrays.copyOf(rankAggregator.aggregate(ranks).toArray(), expected.length)));
     }
 
     @Test
     public void markovChainTestMC1IceCreamFlavors() {
-        rankVerification(MarkovChain.MC1(), iceCreamFlavors, iceCreamFlavorsAnswer2);
+        rankVerification(MarkovChainAggregators.MC1(), iceCreamFlavors, iceCreamFlavorsAnswer2);
     }
 
     @Test
     public void markovChainTestMC1LongList() {
-        rankVerification(MarkovChain.MC1(), longLists, longListsMC1Answer);
+        rankVerification(MarkovChainAggregators.MC1(), longLists, longListsMC1Answer);
     }
 
     @Test
     public void markovChainTestMC2IceCreamFlavors() {
-        rankVerification(MarkovChain.MC2(), iceCreamFlavors, iceCreamFlavorsAnswer);
+        rankVerification(MarkovChainAggregators.MC2(), iceCreamFlavors, iceCreamFlavorsAnswer);
     }
 
     @Test
     public void markovChainTestMC2LongList() {
-        rankVerification(MarkovChain.MC2(), longLists, longListsMC2Answer2);
+        rankVerification(MarkovChainAggregators.MC2(), longLists, longListsMC2Answer2);
     }
 
     @Test
     public void markovChainTestMC3IceCreamFlavors() {
-        rankVerification(MarkovChain.MC3(), iceCreamFlavors, iceCreamFlavorsAnswer);
+        rankVerification(MarkovChainAggregators.MC3(), iceCreamFlavors, iceCreamFlavorsAnswer);
     }
 
     @Test
     public void markovChainTestMC3LongList() {
-        rankVerification(MarkovChain.MC3(), longLists, longListsMC3Answer);
+        rankVerification(MarkovChainAggregators.MC3(), longLists, longListsMC3Answer);
     }
 }
