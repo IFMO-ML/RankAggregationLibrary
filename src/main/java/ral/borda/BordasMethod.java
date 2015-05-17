@@ -1,12 +1,12 @@
 package ral.borda;
 
-import ral.Pair;
-import ral.Ranker;
+import ral.ListOfRanks;
+import ral.RankAggregator;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BordasMethod<T> implements Ranker<T> {
+public class BordasMethod<T> implements RankAggregator<T> {
     private final AggregationFunction<T> aggregationFunction;
 
     public BordasMethod(AggregationFunction<T> aggregationFunction) {
@@ -30,14 +30,8 @@ public class BordasMethod<T> implements Ranker<T> {
     }
 
     @Override
-    public List<T> rank(Pair<Double, List<T>>[] weighedList) {
-        aggregationFunction.addAll(weighedList);
-        return aggregationFunction.calculate().stream().map(pair -> pair.second).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<T> rank(List<T>[] lists) {
-        aggregationFunction.addAll(lists);
+    public List<T> aggregate(ListOfRanks<T> ranks) {
+        aggregationFunction.addAll(ranks);
         return aggregationFunction.calculate().stream().map(pair -> pair.second).collect(Collectors.toList());
     }
 }

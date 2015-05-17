@@ -1,8 +1,5 @@
 package ral;
 
-import ral.borda.BordasMethod;
-import ral.mc.MarkovChain;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +33,14 @@ public class Interface {
             }
         }
 
-        out.printArray(BordasMethod.<Integer>arithmeticAverageRanker().rank(list).toArray(new Integer[0]));
-        out.printArray(BordasMethod.<Integer>medianRanker().rank(list).toArray(new Integer[0]));
-        out.printArray(BordasMethod.<Integer>geometricMeanRanker().rank(list).toArray(new Integer[0]));
-        out.printArray(BordasMethod.<Integer>L2NormRanker().rank(list).toArray(new Integer[0]));
-        out.printArray(MarkovChain.MC1().rank(list).toArray(new Integer[0]));
-        out.printArray(MarkovChain.MC2().rank(list).toArray(new Integer[0]));
-        out.printArray(MarkovChain.MC3().rank(list).toArray(new Integer[0]));
+//        out.printArray(BordasMethod.<Integer>arithmeticAverageRanker().rank(list).toArray(new Integer[0]));
 //        out.printArray(BordasMethod.<Integer>medianRanker().rank(list).toArray(new Integer[0]));
+//        out.printArray(BordasMethod.<Integer>geometricMeanRanker().rank(list).toArray(new Integer[0]));
+//        out.printArray(BordasMethod.<Integer>L2NormRanker().rank(list).toArray(new Integer[0]));
+//        out.printArray(MarkovChain.MC1().aggregate(list).toArray(new Integer[0]));
+//        out.printArray(MarkovChain.MC2().aggregate(list).toArray(new Integer[0]));
+//        out.printArray(MarkovChain.MC3().aggregate(list).toArray(new Integer[0]));
+//        out.printArray(BordasMethod.<Integer>medianRanker().aggregate(list).toArray(new Integer[0]));
 
         in.close();
         out.close();

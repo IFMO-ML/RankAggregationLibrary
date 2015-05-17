@@ -70,6 +70,11 @@ public class ListOfRanks<T> implements Iterable<ListOfRanks<T>.Rank> {
         return itemsMapReverse.get(n);
     }
 
+    public List<T> items() {
+        initItemsMap();
+        return itemsMapReverse;
+    }
+
     public class Rank implements Iterable<T> {
         public final double weight;
         public final int length;
