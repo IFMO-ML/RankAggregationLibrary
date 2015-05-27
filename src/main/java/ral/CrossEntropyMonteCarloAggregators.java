@@ -2,7 +2,7 @@ package ral;
 
 import java.util.List;
 
-public class CEMC<T> implements RankAggregator<T> {
+public class CrossEntropyMonteCarloAggregators<T> implements RankAggregator<T> {
     @Override
     public List<T> aggregate(ListOfRanks<T> ranks) {
         return null;

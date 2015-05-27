@@ -96,26 +96,26 @@ public class MarkovChainAggregators<T> implements RankAggregator<T> {
 
     @Override
     public List<T> aggregate(ListOfRanks<T> ranks) {
-        int n = ranks.countOfRanks();
         int m = ranks.countOfItems();
-
+        double n_ = DoubleStream.of(ranks.weights()).sum();
         double subtrahend = 1 / (double) m;
-        double subtrahend2 = 1 / (double) (m * n);
+        double subtrahend2 = 1 / (m * n_);
 
-        double medium = n / 2.;
+        double medium = n_ / 2.;
         double[][] ma1 = new double[m][m];
         double[][] ma2 = new double[m][m];
         double[][] ma3 = new double[m][m];
 
         for (int u = 0; u < m; u++) {
             for (int v = 0; v < m; v++) {
-                int c = 0;
+                final int finalU = u;
+                final int finalV = v;
 
-                for (ListOfRanks<T>.Rank rank : ranks) {
-                    if (rank.position(u) > rank.position(v)) {
-                        c += rank.weight;
-                    }
-                }
+                double c = ranks
+                        .stream()
+                        .filter(rank -> rank.position(finalU) > rank.position(finalV))
+                        .mapToDouble(rank -> rank.weight)
+                        .sum();
 
                 if (c > 0) { // MC1
                     ma1[u][v] = subtrahend;
@@ -147,10 +147,15 @@ public class MarkovChainAggregators<T> implements RankAggregator<T> {
 
         double[] weights = findStationaryDistribution(transfer(ma, 0.05));
 
-        return IntStream.range(0, m).mapToObj(i -> Pair.of(weights[i], ranks.itemByNumber(i))).sorted((o1, o2) -> -Double.compare(o1.first, o2.first)).map(pair -> pair.second).collect(Collectors.toList());
+        return IntStream
+                .range(0, m)
+                .mapToObj(i -> Pair.of(weights[i], ranks.itemByNumber(i)))
+                .sorted((o1, o2) -> -Double.compare(o1.first, o2.first))
+                .map(pair -> pair.second)
+                .collect(Collectors.toList());
     }
 
-    private static enum Type {
+    private enum Type {
         MC1, MC2, MC3
     }
 }

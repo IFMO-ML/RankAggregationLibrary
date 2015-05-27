@@ -20,6 +20,22 @@ public class BordasAggregatorsTest {
             {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 56, 57, 58, 59, 60, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65},
     });
 
+    private static final ListOfRanks<Integer> longListsW = new ListOfRanks<>(
+            new Integer[][]{
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 56, 57, 58, 59, 60, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65},
+            }, new double[]{30, 30, 30}
+    );
+
+    private static final ListOfRanks<Integer> longListsW2 = new ListOfRanks<>(
+            new Integer[][]{
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 56, 57, 58, 59, 60, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65},
+            }, new double[]{1. / 30, 1. / 30, 1. / 30}
+    );
+
     private static final Integer[] longListsBrodaARM = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 46, 56, 57, 47, 58, 59, 48, 60, 41, 42};
     private static final Integer[] longListsBrodaMED = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 31, 32, 33, 34, 35};
     private static final Integer[] longListsBrodaGEM = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 56, 30, 57, 58, 46, 59, 47, 60, 41, 48, 42};
@@ -44,6 +60,13 @@ public class BordasAggregatorsTest {
         Assert.assertEquals(Arrays.toString(expected), Arrays.toString(Arrays.copyOf(rankAggregator.aggregate(ranks).toArray(), expected.length)));
     }
 
+    private <T> void rankVerificationWeights(RankAggregator<T> rankAggregator, ListOfRanks<T> ranks, ListOfRanks<T> ranksW) {
+        Assert.assertEquals(
+                Arrays.toString(rankAggregator.aggregate(ranks).toArray()),
+                Arrays.toString(rankAggregator.aggregate(ranksW).toArray())
+        );
+    }
+
     @Test
     public void arithmeticAverageRankerTestIceCreamFlavors() {
         rankVerification(BordasAggregators.arithmeticAverageRanker(), iceCreamFlavors, iceCreamFlavorsAnswer);
@@ -55,9 +78,19 @@ public class BordasAggregatorsTest {
     }
 
     @Test
-    public void arithmeticAverageRankerTestGens() {
-        rankVerification(BordasAggregators.arithmeticAverageRanker(), gens, gensBrodaARM);
+    public void arithmeticAverageRankerTestLongListsWeights() {
+        rankVerificationWeights(BordasAggregators.arithmeticAverageRanker(), longLists, longListsW);
     }
+
+    @Test
+    public void arithmeticAverageRankerTestLongListsWeights2() {
+        rankVerificationWeights(BordasAggregators.arithmeticAverageRanker(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void arithmeticAverageRankerTestGens() {
+//        rankVerification(BordasAggregators.arithmeticAverageRanker(), gens, gensBrodaARM);
+//    }
 
     @Test
     public void medianRankerTestIceCreamFlavors() {
@@ -70,9 +103,19 @@ public class BordasAggregatorsTest {
     }
 
     @Test
-    public void medianRankerTestGens() {
-        rankVerification(BordasAggregators.medianRanker(), gens, gensBrodaMED);
+    public void medianRankerTestLongListsWeights() {
+        rankVerificationWeights(BordasAggregators.medianRanker(), longLists, longListsW);
     }
+
+    @Test
+    public void medianRankerTestLongListsWeights2() {
+        rankVerificationWeights(BordasAggregators.medianRanker(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void medianRankerTestGens() {
+//        rankVerification(BordasAggregators.medianRanker(), gens, gensBrodaMED);
+//    }
 
     @Test
     public void geometricMeanRankerTestIceCreamFlavors() {
@@ -85,9 +128,19 @@ public class BordasAggregatorsTest {
     }
 
     @Test
-    public void geometricMeanRankerTestGens() {
-        rankVerification(BordasAggregators.geometricMeanRanker(), gens, gensBrodaGEM);
+    public void geometricMeanRankerTestLongListsWeights() {
+        rankVerificationWeights(BordasAggregators.geometricMeanRanker(), longLists, longListsW);
     }
+
+    @Test
+    public void geometricMeanRankerTestLongListsWeights2() {
+        rankVerificationWeights(BordasAggregators.geometricMeanRanker(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void geometricMeanRankerTestGens() {
+//        rankVerification(BordasAggregators.geometricMeanRanker(), gens, gensBrodaGEM);
+//    }
 
     @Test
     public void L2NormRankerTestIceCreamFlavors() {
@@ -100,7 +153,17 @@ public class BordasAggregatorsTest {
     }
 
     @Test
-    public void L2NormRankerTestGens() {
-        rankVerification(BordasAggregators.L2NormRanker(), gens, gensBrodaL2N);
+    public void L2NormRankerTestLongListsWeights() {
+        rankVerificationWeights(BordasAggregators.L2NormRanker(), longLists, longListsW);
     }
+
+    @Test
+    public void L2NormRankerTestLongListsWeights2() {
+        rankVerificationWeights(BordasAggregators.L2NormRanker(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void L2NormRankerTestGens() {
+//        rankVerification(BordasAggregators.L2NormRanker(), gens, gensBrodaL2N);
+//    }
 }

@@ -1,8 +1,6 @@
 package ral;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -24,22 +22,31 @@ public class Interface {
     public void run() {
         int n = in.nextInt();
 
-        List<Integer>[] list = new List[n];
+        Integer[][] a = new Integer[n][];
+        double[] w = new double[n];
+
         for (int i = 0; i < n; i++) {
-            list[i] = new ArrayList<>();
             int m = in.nextInt();
+            a[i] = new Integer[m];
+
             for (int j = 0; j < m; j++) {
-                list[i].add(in.nextInt());
+                a[i][j] = in.nextInt();
             }
         }
 
-//        out.printArray(BordasMethod.<Integer>arithmeticAverageRanker().rank(list).toArray(new Integer[0]));
-//        out.printArray(BordasMethod.<Integer>medianRanker().rank(list).toArray(new Integer[0]));
-//        out.printArray(BordasMethod.<Integer>geometricMeanRanker().rank(list).toArray(new Integer[0]));
-//        out.printArray(BordasMethod.<Integer>L2NormRanker().rank(list).toArray(new Integer[0]));
-//        out.printArray(MarkovChain.MC1().aggregate(list).toArray(new Integer[0]));
-//        out.printArray(MarkovChain.MC2().aggregate(list).toArray(new Integer[0]));
-//        out.printArray(MarkovChain.MC3().aggregate(list).toArray(new Integer[0]));
+        for (int i = 0; i < n; i++) {
+            w[i] = in.nextDouble();
+        }
+
+        ListOfRanks<Integer> list = new ListOfRanks<>(a, w);
+
+        out.printArray(BordasAggregators.<Integer>arithmeticAverageRanker().aggregate(list).toArray(new Integer[0]));
+        out.printArray(BordasAggregators.<Integer>medianRanker().aggregate(list).toArray(new Integer[0]));
+        out.printArray(BordasAggregators.<Integer>geometricMeanRanker().aggregate(list).toArray(new Integer[0]));
+        out.printArray(BordasAggregators.<Integer>L2NormRanker().aggregate(list).toArray(new Integer[0]));
+        out.printArray(MarkovChainAggregators.<Integer>MC1().aggregate(list).toArray(new Integer[0]));
+        out.printArray(MarkovChainAggregators.<Integer>MC2().aggregate(list).toArray(new Integer[0]));
+        out.printArray(MarkovChainAggregators.<Integer>MC3().aggregate(list).toArray(new Integer[0]));
 //        out.printArray(BordasMethod.<Integer>medianRanker().aggregate(list).toArray(new Integer[0]));
 
         in.close();

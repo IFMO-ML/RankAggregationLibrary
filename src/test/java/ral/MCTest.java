@@ -21,6 +21,22 @@ public class MCTest {
             {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 56, 57, 58, 59, 60, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65},
     });
 
+    private static final ListOfRanks<Integer> longListsW = new ListOfRanks<>(
+            new Integer[][]{
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 56, 57, 58, 59, 60, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65},
+            }, new double[]{30, 30, 30}
+    );
+
+    private static final ListOfRanks<Integer> longListsW2 = new ListOfRanks<>(
+            new Integer[][]{
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55},
+                    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 56, 57, 58, 59, 60, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 61, 62, 63, 64, 65},
+            }, new double[]{1. / 30, 1. / 30, 1. / 30}
+    );
+
     private static final Integer[] longListsMC1Answer = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 26, 24, 27, 25, 28, 46, 29, 47, 30, 48, 56, 49, 57, 50, 58, 59, 41};
     //    private static final Integer[] longListsMC2Answer = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 57, 56, 58, 60, 59};
     private static final Integer[] longListsMC2Answer2 = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 46, 47, 48, 49, 50, 57, 56, 58, 59, 60};
@@ -43,6 +59,13 @@ public class MCTest {
         Assert.assertEquals(Arrays.toString(expected), Arrays.toString(Arrays.copyOf(rankAggregator.aggregate(ranks).toArray(), expected.length)));
     }
 
+    private <T> void rankVerificationWeights(RankAggregator<T> rankAggregator, ListOfRanks<T> ranks, ListOfRanks<T> ranksW) {
+        Assert.assertEquals(
+                Arrays.toString(rankAggregator.aggregate(ranks).toArray()),
+                Arrays.toString(rankAggregator.aggregate(ranksW).toArray())
+        );
+    }
+
     @Test
     public void markovChainTestMC1IceCreamFlavors() {
         rankVerification(MarkovChainAggregators.MC1(), iceCreamFlavors, iceCreamFlavorsAnswer2);
@@ -54,9 +77,19 @@ public class MCTest {
     }
 
     @Test
-    public void markovChainTestMC1gens() {
-        rankVerification(MarkovChainAggregators.MC1(), gens, gensMC1Answer);
+    public void markovChainTestMC1LongListWeights() {
+        rankVerificationWeights(MarkovChainAggregators.MC1(), longLists, longListsW);
     }
+
+    @Test
+    public void markovChainTestMC1LongListWeights2() {
+        rankVerificationWeights(MarkovChainAggregators.MC1(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void markovChainTestMC1gens() {
+//        rankVerification(MarkovChainAggregators.MC1(), gens, gensMC1Answer);
+//    }
 
     @Test
     public void markovChainTestMC2IceCreamFlavors() {
@@ -69,9 +102,19 @@ public class MCTest {
     }
 
     @Test
-    public void markovChainTestMC2gens() {
-        rankVerification(MarkovChainAggregators.MC2(), gens, gensMC2Answer);
+    public void markovChainTestMC2LongListWeights() {
+        rankVerificationWeights(MarkovChainAggregators.MC2(), longLists, longListsW);
     }
+
+    @Test
+    public void markovChainTestMC2LongListWeights2() {
+        rankVerificationWeights(MarkovChainAggregators.MC2(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void markovChainTestMC2gens() {
+//        rankVerification(MarkovChainAggregators.MC2(), gens, gensMC2Answer);
+//    }
 
     @Test
     public void markovChainTestMC3IceCreamFlavors() {
@@ -84,7 +127,17 @@ public class MCTest {
     }
 
     @Test
-    public void markovChainTestMC3gens() {
-        rankVerification(MarkovChainAggregators.MC3(), gens, gensMC3Answer);
+    public void markovChainTestMC3LongListWeights() {
+        rankVerificationWeights(MarkovChainAggregators.MC3(), longLists, longListsW);
     }
+
+    @Test
+    public void markovChainTestMC3LongListWeights2() {
+        rankVerificationWeights(MarkovChainAggregators.MC3(), longLists, longListsW2);
+    }
+
+//    @Test
+//    public void markovChainTestMC3gens() {
+//        rankVerification(MarkovChainAggregators.MC3(), gens, gensMC3Answer);
+//    }
 }

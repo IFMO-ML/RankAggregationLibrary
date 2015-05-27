@@ -3,6 +3,7 @@ package ral;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class ListOfRanks<T> implements Iterable<ListOfRanks<T>.Rank> {
     private final List<Rank> ranks;
@@ -65,9 +66,17 @@ public class ListOfRanks<T> implements Iterable<ListOfRanks<T>.Rank> {
         return ranks.size();
     }
 
+    public Stream<Rank> stream() {
+        return ranks.stream();
+    }
+
     public T itemByNumber(int n) {
         initItemsMap();
         return itemsMapReverse.get(n);
+    }
+
+    public double[] weights() {
+        return ranks.stream().mapToDouble(rank -> rank.weight).toArray();
     }
 
     public List<T> items() {
