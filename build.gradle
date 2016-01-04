@@ -3,6 +3,12 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.ifmo.ctddev.ral.Interface'
+    }
+}
+
 sourceCompatibility = 1.8
 
 repositories {
