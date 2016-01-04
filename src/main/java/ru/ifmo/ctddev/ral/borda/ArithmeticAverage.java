@@ -1,13 +1,10 @@
-package ral.borda;
+package ru.ifmo.ctddev.ral.borda;
 
-import ral.Pair;
+import ru.ifmo.ctddev.ral.Pair;
 
 import java.util.*;
 
-import static java.lang.Math.pow;
-
-public class L2Norm<T> implements AggregationFunction<T> {
-    private static final double P = 2;
+public class ArithmeticAverage<T> implements AggregationFunction<T> {
     /**
      * T - item,
      * Double1 - L (norm multiplier)
@@ -22,10 +19,10 @@ public class L2Norm<T> implements AggregationFunction<T> {
         if (map.containsKey(item)) {
             pair = map.get(item);
         } else {
-            pair = Pair.of(0., 0.);
+            pair = Pair.of(.0, .0);
         }
 
-        map.put(item, Pair.of(pair.first + weight, pair.second + pow(position, P) * weight));
+        map.put(item, Pair.of(pair.first + weight, pair.second + (double) position * weight));
     }
 
     /**

@@ -1,6 +1,6 @@
-package ral.borda;
+package ru.ifmo.ctddev.ral.borda;
 
-import ral.Pair;
+import ru.ifmo.ctddev.ral.Pair;
 
 import java.util.*;
 

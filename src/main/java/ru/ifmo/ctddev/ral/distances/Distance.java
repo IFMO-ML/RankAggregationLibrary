@@ -1,4 +1,4 @@
-package ral.distances;
+package ru.ifmo.ctddev.ral.distances;
 
 /**
  * This interface provide way to calculate distances between to top-r ranked lists that are not necessarily of the

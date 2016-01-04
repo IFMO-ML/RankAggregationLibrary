@@ -1,4 +1,4 @@
-package ral.distances;
+package ru.ifmo.ctddev.ral.distances;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package ral;
+package ru.ifmo.ctddev.ral;
 
 public class Pair<F, S> {
 

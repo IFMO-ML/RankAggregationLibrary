@@ -1,4 +1,4 @@
-package ral;
+package ru.ifmo.ctddev.ral;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package ral;
+package ru.ifmo.ctddev.ral;
 
 import java.io.*;
 import java.util.Locale;

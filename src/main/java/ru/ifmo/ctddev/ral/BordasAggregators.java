@@ -1,6 +1,6 @@
-package ral;
+package ru.ifmo.ctddev.ral;
 
-import ral.borda.*;
+import ru.ifmo.ctddev.ral.borda.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
